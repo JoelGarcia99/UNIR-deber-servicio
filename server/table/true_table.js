@@ -2,14 +2,13 @@ const app = require("express")();
 const binaryToDecimal = require("../convertion/binary_to_decimal");
 const findTableindices = require("../helpers/table_index_equation");
 
-const VALIDATE_EQUATION = /^([A-Z][A-Z]*'?\+?)+[A-Z]'?$/g;
-
 // If you change it you should change the binary_to_decimal.js file
 // located in the convertion folder
 const MAX_VARIABLES = 5;
 
 app.post("/trueTable", (req, res)=>{
 
+    const VALIDATE_EQUATION = /^([A-Z]'?\+?)+[A-Z]'?$/g;
     let equation = (req.body.equation || "").replace(' ', '').toUpperCase();
 
     // Validating the equation
@@ -17,19 +16,29 @@ app.post("/trueTable", (req, res)=>{
         return res.status(400).json({
             ok: false,
             error: {
-                message: `La ecuación ingresada no es válida.`
+                message: `La ecuación ingresada no es válida.`,
+                equation
             }
         });
     }
 
     
     // This will search for how many variables user is working with
-    let nVariables = equation.replace(/['|\+| ]*/g, '').length;
+    let rawVariables = new Set(equation.replace(/['|\+| ]*/g, ''));
+    let nVariables = 0;
+
+    rawVariables.forEach(i=>{
+        if(i.charCodeAt(0) - 64 > nVariables) {
+            nVariables = i.charCodeAt(0) - 64; 
+        }
+    });
+
     if(nVariables <= 1 || nVariables > MAX_VARIABLES){
         return res.status(400).json({
             ok: false,
             error: {
-                message: `Estás usando ${nVariables}. Esta API trabaja con mínimo dos variables, máximo ${MAX_VARIABLES}.`
+                message: `Estás usando ${nVariables}. Esta API trabaja con mínimo dos variables, máximo ${MAX_VARIABLES}.`,
+                equation
             }
         });
     }
@@ -71,6 +80,7 @@ app.post("/trueTable", (req, res)=>{
         ok: true,
         message: "Tabla de verdad creada correctamente",
         equation,
+        variables: nVariables,
         output: values
     });
 });
