@@ -6,7 +6,7 @@ app.get('/conversor/binaryToDecimal', (req, res)=>{
     const _value = req.query.value || "";
 
     // Validating the number is binary
-    if(!/^[0|1]+/g.test(_value)) {
+    if(!/^[0|1]*[0|1]$/g.test(_value)) {
         return res.status(400).json({
             ok: false,
             error: {
@@ -29,7 +29,8 @@ app.get('/conversor/binaryToDecimal', (req, res)=>{
 
     return res.json({
         ok: true,
-        message: "Conversión realizado con éxito",
+        message: "Conversión realizada con éxito",
+        input: _value,
         output: binaryToDecimal(value)
     })
 

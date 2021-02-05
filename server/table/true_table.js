@@ -1,18 +1,19 @@
 const app = require("express")();
 const binaryToDecimal = require("../convertion/binary_to_decimal");
+const findTableindices = require("../helpers/table_index_equation");
 
-const VALIDATE_ECUATION = /^([A-Z][A-Z]*'?\+?)+[A-Z]'?$/g;
+const VALIDATE_EQUATION = /^([A-Z][A-Z]*'?\+?)+[A-Z]'?$/g;
 
 // If you change it you should change the binary_to_decimal.js file
 // located in the convertion folder
 const MAX_VARIABLES = 5;
 
-app.get("/trueTable", (req, res)=>{
+app.post("/trueTable", (req, res)=>{
 
-    let ecuation = (req.query.ecuation || "").replace(' ', '').toUpper();
+    let equation = (req.body.equation || "").replace(' ', '').toUpperCase();
 
-    // Validating the ecuation
-    if(!VALIDATE_ECUATION.test(ecuation)) {
+    // Validating the equation
+    if(!VALIDATE_EQUATION.test(equation)) {
         return res.status(400).json({
             ok: false,
             error: {
@@ -23,7 +24,7 @@ app.get("/trueTable", (req, res)=>{
 
     
     // This will search for how many variables user is working with
-    let nVariables = ecuation.replace(/['|\+| ]*/g, '').length;
+    let nVariables = equation.replace(/['|\+| ]*/g, '').length;
     if(nVariables <= 1 || nVariables > MAX_VARIABLES){
         return res.status(400).json({
             ok: false,
@@ -34,24 +35,44 @@ app.get("/trueTable", (req, res)=>{
     }
 
     // This is the true table (just the true values, not the positions)
-    let values = new Int8Array(2 ** nVariables - 1); // The number of rows in table
-    let position = new Int8Array(nVariables); // the variables (columns) in table
+    let values = new Int8Array(2 ** nVariables); // The number of rows in table
+    let position = ""; // the variables (columns) in table
 
-    for(let logicValue, j, i = 0; i < ecuation.length; ++i) {
-        for(j=0; j<ecuation[i]; ++j) {
-            
-            logicValue = 1;
+    const splittedEquation = equation.split('+');
 
-            if((ecuation[i][j+1] || "") === '\'') {
-                ++j;
-                logicValue = 0;
-            }
-            
-            position[ecuation[i].charCodeAt(j) - 65] = logicValue;
+    for(let temp, j, i = 0; i < splittedEquation.length; ++i) {
+
+        position = "";
+
+        for(j=0; j<nVariables; ++j) {
+            position +="X";
         }
 
-        values[binaryToDecimal(position)] = 1;
-    }    
+        for(j=0; j<splittedEquation[i].length; ++j) {
+
+            temp = position.split("");
+
+            if((splittedEquation[i][j+1] || "") === '\'') {
+                temp[splittedEquation[i].charCodeAt(j) - 65] = '0';
+                ++j;
+            }
+            else {
+                temp[splittedEquation[i].charCodeAt(j) - 65] = '1';
+            }
+            position = temp.join("");
+        }
+
+        findTableindices(position).forEach(i=>{
+            values[binaryToDecimal(i)] = 1;
+        });
+    }
+
+    return res.json({
+        ok: true,
+        message: "Tabla de verdad creada correctamente",
+        equation,
+        output: values
+    });
 });
 
 
