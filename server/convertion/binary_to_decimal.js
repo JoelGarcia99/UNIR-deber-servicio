@@ -28,4 +28,25 @@ const binaryToDecimal = (vector)=>{
     return result;
 }
 
-module.exports = binaryToDecimal;
+/**
+ * 
+ * @param {number} decimal 
+ */
+const decimalToBinary = (decimal)=>{
+
+    let binary = "";
+
+    for(let i=process.env.MAX_BITS-1; i>=0; --i) {
+        if(BINARY_POWER[i] <= decimal) {
+            binary += "1";
+            decimal -= BINARY_POWER[i];
+        }
+        else {
+            binary += "0";
+        }
+    }
+
+    return binary;
+}
+
+module.exports = {binaryToDecimal, decimalToBinary};

@@ -1,5 +1,36 @@
 const app = require("express")();
-const binaryToDecimal = require("./binary_to_decimal");
+const {binaryToDecimal, decimalToBinary} = require("./binary_to_decimal");
+
+app.get('/conversor/decimalToBinary', (req, res)=>{
+    const value = req.query.value || 0;
+
+    // Validating the number is binary
+    if(!/^[0-9]*[0-9]$/g.test(value)) {
+        return res.status(400).json({
+            ok: false,
+            error: {
+                message: "El valor ingresado no es un número entero"
+            }
+        })
+    }
+
+    if(value > 2**process.env.MAX_BITS) {
+        return res.status(400).json({
+            ok: false,
+            error: {
+                message: `Solo se aceptan valores de 0 a ${2**process.env.MAX_BITS}`
+            }
+        })
+    }
+
+    return res.json({
+        ok: true,
+        message: "Conversión realizada con éxito",
+        input: value,
+        length: `${process.env.MAX_BITS} bits`,
+        output: decimalToBinary(value)
+    })
+})
 
 app.get('/conversor/binaryToDecimal', (req, res)=>{
 

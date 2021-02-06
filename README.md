@@ -1,5 +1,5 @@
-# Karnaugh Map  
-Deber de la UNIR
+# Laboratorio de la UNIR 
+Laboratorio de creación de un servicio.
 
 # Interfaz de uso  
 ## Conversor de binario a decimal  
@@ -12,6 +12,20 @@ Deber de la UNIR
     "message": "Conversión realizada con éxito",
     "input": "0110",
     "output": 6
+}
+```  
+
+## Conversor de decimal a binario  
+**ruta [GET]**: ```/conversor/decimalToBinary?value=xxxx```  
+**descripción**: Transforma un valor decimal a binario. El valor que le pasemos debe ser un entero positivo. El servicio responderá con el valor binario con 16 bits de precisión (si se desea cambiar esto, modificar la variable de entorno *MAX_BITS* que por defecto está a 16).  
+**Respuesta**: La respuesta será el valor transformado a binario. A continuación un ejemplo de la respuesta:  
+```
+{
+    "ok": true,
+    "message": "Conversión realizada con éxito",
+    "input": "15",
+    "length": "16 bits",
+    "output": "0000000000001111"
 }
 ```
 

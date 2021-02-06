@@ -1,5 +1,5 @@
 const app = require("express")();
-const binaryToDecimal = require("../convertion/binary_to_decimal");
+const {binaryToDecimal} = require("../convertion/binary_to_decimal");
 const findTableindices = require("../helpers/table_index_equation");
 
 // If you change it you should change the binary_to_decimal.js file
