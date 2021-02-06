@@ -18,7 +18,7 @@ Deber de la UNIR
 ## Conversor ecuación booleana a tabla de verdad
 **ruta [POST]**: ```/trueTable```  
 **body**: 
-1. **equation**: String - Aquí irá la ecuación de máximo 5 variables (si desea ampliar esto debe cambiar el valor de la variable ```MAX_VARIABLES```, que se encuentra en ```server\table\true_table.js``` y que por defecto es 5), sin paréntesis y utilizando un apóstrofe (') para negar. Por ejemplo, la siguiente ecuación no sería válida ```(ABC)' + D``` puesto que ABC están dentro de un factor negado; la forma correcta sería escribir cada elemento del factor negado, de la siguiente manera ```A'B'C' + D ```.
+1. **equation**: String - Aquí irá la ecuación de máximo 8 variables (si desea ampliar esto debe cambiar el valor de la variable ```MAX_VARIABLES```, que se encuentra en ```server\table\true_table.js``` y que por defecto es 8), sin paréntesis y utilizando un apóstrofe (') para negar. Por ejemplo, la siguiente ecuación no sería válida ```(ABC)' + D``` puesto que ABC están dentro de un factor negado; la forma correcta sería escribir cada elemento del factor negado, de la siguiente manera ```A'B'C' + D ```.
 
 **descripción**: Crea una tabla de verdad a partir de una ecuación booleana. La ecuación deberá tener como variable las letras de la A a la Z y la negación se expresará con un apostrofe ('), ejemplo: ```A'B + C```.  
 **Respuesta**: La respuesta del servidor será la salida de la tabla de verdad, es decir, solo la última columna, la que contendría los valores de verdad en donde la ecuación se haría verdadera o falsa. Por ejemplo, si se tiene la siguiente tabla:  

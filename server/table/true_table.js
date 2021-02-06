@@ -4,7 +4,7 @@ const findTableindices = require("../helpers/table_index_equation");
 
 // If you change it you should change the binary_to_decimal.js file
 // located in the convertion folder
-const MAX_VARIABLES = 5;
+const MAX_VARIABLES = 8;
 
 app.post("/trueTable", (req, res)=>{
 
@@ -37,7 +37,7 @@ app.post("/trueTable", (req, res)=>{
         return res.status(400).json({
             ok: false,
             error: {
-                message: `Estás usando ${nVariables}. Esta API trabaja con mínimo dos variables, máximo ${MAX_VARIABLES}.`,
+                message: `Estás usando ${nVariables} [A-${String.fromCharCode(64 + nVariables)}] variables. Esta API trabaja con mínimo dos variables, máximo ${MAX_VARIABLES}.`,
                 equation
             }
         });
