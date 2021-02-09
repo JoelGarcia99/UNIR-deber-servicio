@@ -1,6 +1,9 @@
 const app = require("express")();
 const {binaryToDecimal, decimalToBinary} = require("./binary_to_decimal");
 
+/// La explicacion de cada una de estas rutas se encuentra en 
+/// el archivo README.md
+
 app.get('/conversor/decimalToBinary', (req, res)=>{
     const value = req.query.value || 0;
 

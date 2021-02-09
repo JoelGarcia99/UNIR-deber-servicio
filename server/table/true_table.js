@@ -1,6 +1,7 @@
 const app = require("express")();
-const {binaryToDecimal} = require("../convertion/binary_to_decimal");
-const findTableindices = require("../helpers/table_index_equation");
+const buildTable = require("./buildTable");
+
+// Esto es una ruta, la explicacion de como funciona esta en el README
 
 // If you change it you should change the binary_to_decimal.js file
 // located in the convertion folder
@@ -22,11 +23,11 @@ app.post("/trueTable", (req, res)=>{
         });
     }
 
-    
     // This will search for how many variables user is working with
     let rawVariables = new Set(equation.replace(/['|\+| ]*/g, ''));
     let nVariables = 0;
 
+    // This will calculate the number of variables
     rawVariables.forEach(i=>{
         if(i.charCodeAt(0) - 64 > nVariables) {
             nVariables = i.charCodeAt(0) - 64; 
@@ -43,38 +44,7 @@ app.post("/trueTable", (req, res)=>{
         });
     }
 
-    // This is the true table (just the true values, not the positions)
-    let values = new Int8Array(2 ** nVariables); // The number of rows in table
-    let position = ""; // the variables (columns) in table
-
-    const splittedEquation = equation.split('+');
-
-    for(let temp, j, i = 0; i < splittedEquation.length; ++i) {
-
-        position = "";
-
-        for(j=0; j<nVariables; ++j) {
-            position +="X";
-        }
-
-        for(j=0; j<splittedEquation[i].length; ++j) {
-
-            temp = position.split("");
-
-            if((splittedEquation[i][j+1] || "") === '\'') {
-                temp[splittedEquation[i].charCodeAt(j) - 65] = '0';
-                ++j;
-            }
-            else {
-                temp[splittedEquation[i].charCodeAt(j) - 65] = '1';
-            }
-            position = temp.join("");
-        }
-
-        findTableindices(position).forEach(i=>{
-            values[binaryToDecimal(i)] = 1;
-        });
-    }
+    const values = buildTable(nVariables, equation);
 
     return res.json({
         ok: true,

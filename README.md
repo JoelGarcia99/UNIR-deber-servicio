@@ -3,7 +3,7 @@ Laboratorio de creación de un servicio.
 
 # Interfaz de uso  
 ## Conversor de binario a decimal  
-**ruta [GET]**: ```/conversor/binaryToDecimal?value=xxxx```  
+**ruta [GET]**: ```https://laboratorio-unir.herokuapp.com/conversor/binaryToDecimal?value=xxxx```  
 **descripción**: Transforma un valor binario a decimal. El valor proveido debe ser una cadena de valores binarios sin espacios. El valor binario debe ser de máximo 16 bits (si se desea cambiar esto, modificar la variable de entorno *MAX_BITS* que por defecto está a 16).  
 **Respuesta**: La respuesta será el valor transformado a decimal. A continuación un ejemplo de la respuesta:  
 ```
@@ -16,7 +16,7 @@ Laboratorio de creación de un servicio.
 ```  
 
 ## Conversor de decimal a binario  
-**ruta [GET]**: ```/conversor/decimalToBinary?value=xxxx```  
+**ruta [GET]**: ```https://laboratorio-unir.herokuapp.com/conversor/decimalToBinary?value=xxxx```  
 **descripción**: Transforma un valor decimal a binario. El valor que le pasemos debe ser un entero positivo. El servicio responderá con el valor binario con 16 bits de precisión (si se desea cambiar esto, modificar la variable de entorno *MAX_BITS* que por defecto está a 16).  
 **Respuesta**: La respuesta será el valor transformado a binario. A continuación un ejemplo de la respuesta:  
 ```
@@ -30,7 +30,7 @@ Laboratorio de creación de un servicio.
 ```
 
 ## Conversor ecuación booleana a tabla de verdad
-**ruta [POST]**: ```/trueTable```  
+**ruta [POST]**: ```https://laboratorio-unir.herokuapp.com/trueTable```  
 **body**: 
 1. **equation**: String - Aquí irá la ecuación de máximo 8 variables (si desea ampliar esto debe cambiar el valor de la variable ```MAX_VARIABLES```, que se encuentra en ```server\table\true_table.js``` y que por defecto es 8), sin paréntesis y utilizando un apóstrofe (') para negar. Por ejemplo, la siguiente ecuación no sería válida ```(ABC)' + D``` puesto que ABC están dentro de un factor negado; la forma correcta sería escribir cada elemento del factor negado, de la siguiente manera ```A'B'C' + D ```.
 
